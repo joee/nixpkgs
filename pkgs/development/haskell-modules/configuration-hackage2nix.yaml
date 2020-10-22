@@ -3854,6 +3854,7 @@ broken-packages:
   - clckwrks-plugin-mailinglist
   - clckwrks-plugin-media
   - clckwrks-plugin-page
+  - clckwrks-plugin-redirect
   - clckwrks-theme-bootstrap
   - clckwrks-theme-clckwrks
   - clckwrks-theme-geo-bootstrap
@@ -5042,6 +5043,7 @@ broken-packages:
   - flaccuraterip
   - flamethrower
   - flamingra
+  - flashblast
   - flat
   - flat-maybe
   - flatbuffers
