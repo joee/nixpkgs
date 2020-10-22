@@ -150,6 +150,8 @@ in {
 
   absl-py = callPackage ../development/python-modules/absl-py { };
 
+  accuweather = callPackage ../development/python-modules/accuweather { };
+
   accupy = callPackage ../development/python-modules/accupy { };
 
   acebinf = callPackage ../development/python-modules/acebinf { };
@@ -451,6 +453,8 @@ in {
   attrdict = callPackage ../development/python-modules/attrdict { };
 
   attrs = callPackage ../development/python-modules/attrs { };
+
+  aubio = callPackage ../development/python-modules/aubio { };
 
   audio-metadata = callPackage ../development/python-modules/audio-metadata { };
 
@@ -2001,6 +2005,8 @@ in {
   fastparquet = callPackage ../development/python-modules/fastparquet { };
 
   fastpbkdf2 = callPackage ../development/python-modules/fastpbkdf2 { };
+
+  fastprogress = callPackage ../development/python-modules/fastprogress { };
 
   fastrlock = callPackage ../development/python-modules/fastrlock { };
 
@@ -4510,6 +4516,8 @@ in {
 
   python-csxcad = callPackage ../development/python-modules/python-csxcad { };
 
+  python-openems = callPackage ../development/python-modules/python-openems { };
+
   pkutils = callPackage ../development/python-modules/pkutils { };
 
   plac = callPackage ../development/python-modules/plac { };
@@ -4751,6 +4759,8 @@ in {
   pyads = callPackage ../development/python-modules/pyads { };
 
   pyaes = callPackage ../development/python-modules/pyaes { };
+
+  pyaftership = callPackage ../development/python-modules/pyaftership { };
 
   pyairvisual = callPackage ../development/python-modules/pyairvisual { };
 
@@ -6309,6 +6319,8 @@ in {
 
   sabyenc = callPackage ../development/python-modules/sabyenc { };
 
+  sacn = callPackage ../development/python-modules/sacn { };
+
   sacremoses = callPackage ../development/python-modules/sacremoses { };
 
   safe = callPackage ../development/python-modules/safe { };
@@ -7546,6 +7558,8 @@ in {
 
   willow = callPackage ../development/python-modules/willow { };
 
+  wled = callPackage ../development/python-modules/wled { };
+
   word2vec = callPackage ../development/python-modules/word2vec { };
 
   wordcloud = callPackage ../development/python-modules/wordcloud { };
@@ -7672,6 +7686,8 @@ in {
   xxhash = callPackage ../development/python-modules/xxhash { };
 
   yahooweather = callPackage ../development/python-modules/yahooweather { };
+
+  yamale = callPackage ../development/python-modules/yamale { };
 
   yamllint = callPackage ../development/python-modules/yamllint { };
 

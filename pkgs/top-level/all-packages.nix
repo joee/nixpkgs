@@ -1999,6 +1999,8 @@ in
 
   futhark = haskell.lib.justStaticExecutables haskellPackages.futhark;
 
+  inherit (nodePackages) fx;
+
   tllist = callPackage ../development/libraries/tllist { };
 
   fcft = callPackage ../development/libraries/fcft { };
@@ -2366,6 +2368,8 @@ in
 
   pixiecore = callPackage ../tools/networking/pixiecore {};
 
+  waitron = callPackage ../tools/networking/waitron {};
+
   pyCA = python3Packages.callPackage ../applications/video/pyca {};
 
   pyrit = callPackage ../tools/security/pyrit {};
@@ -2413,6 +2417,8 @@ in
   step-cli = callPackage ../tools/security/step-cli { };
 
   string-machine = callPackage ../applications/audio/string-machine { };
+
+  stripe-cli = callPackage ../tools/admin/stripe-cli { };
 
   bash-supergenpass = callPackage ../tools/security/bash-supergenpass { };
 
@@ -3420,6 +3426,8 @@ in
   wallutils = callPackage ../tools/graphics/wallutils { };
 
   wayland-utils = callPackage ../tools/wayland/wayland-utils { };
+
+  wayst = callPackage ../applications/misc/wayst { };
 
   wev = callPackage ../tools/misc/wev { };
 
@@ -5098,10 +5106,13 @@ in
   nodejs-slim-14_x = callPackage ../development/web/nodejs/v14.nix {
     enableNpm = false;
   };
-
+  nodejs-15_x = callPackage ../development/web/nodejs/v15.nix { };
+  nodejs-slim-15_x = callPackage ../development/web/nodejs/v15.nix {
+    enableNpm = false;
+  };
   # Update this when adding the newest nodejs major version!
-  nodejs_latest = nodejs-14_x;
-  nodejs-slim_latest = nodejs-slim-14_x;
+  nodejs_latest = nodejs-15_x;
+  nodejs-slim_latest = nodejs-slim-15_x;
 
   nodePackages_latest = dontRecurseIntoAttrs (callPackage ../development/node-packages/default.nix {
     nodejs = pkgs.nodejs_latest;
@@ -5720,6 +5731,8 @@ in
   networkmanager-fortisslvpn = callPackage ../tools/networking/network-manager/fortisslvpn { };
 
   networkmanager_strongswan = callPackage ../tools/networking/network-manager/strongswan { };
+
+  networkmanager-sstp = callPackage ../tools/networking/network-manager/sstp { };
 
   networkmanagerapplet = callPackage ../tools/networking/network-manager/applet { };
 
@@ -7367,7 +7380,7 @@ in
       inherit (darwin.apple_sdk.frameworks) CoreFoundation Cocoa;
       tex = texlive.combined.scheme-small;
       extraFonts = true;
-    } else callPackage ../applications/editors/texmacs {
+    } else libsForQt5.callPackage ../applications/editors/texmacs {
       tex = texlive.combined.scheme-small;
       extraFonts = true;
     };
@@ -9323,17 +9336,7 @@ in
 
   javacard-devkit = pkgsi686Linux.callPackage ../development/compilers/javacard-devkit { };
 
-  julia_07 = callPackage ../development/compilers/julia/0.7.nix {
-    gmp = gmp6;
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-  };
-
   julia_10 = callPackage ../development/compilers/julia/1.0.nix {
-    gmp = gmp6;
-    inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
-  };
-
-  julia_11 = callPackage ../development/compilers/julia/1.1.nix {
     gmp = gmp6;
     inherit (darwin.apple_sdk.frameworks) CoreServices ApplicationServices;
   };
@@ -9574,7 +9577,7 @@ in
   inherit (callPackage ../development/tools/ocaml/ocamlformat { })
     ocamlformat # latest version
     ocamlformat_0_11_0 ocamlformat_0_12 ocamlformat_0_13_0 ocamlformat_0_14_0
-    ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_15_0;
+    ocamlformat_0_14_1 ocamlformat_0_14_2 ocamlformat_0_14_3 ocamlformat_0_15_0;
 
   orc = callPackage ../development/compilers/orc { };
 
@@ -9665,11 +9668,11 @@ in
   # So this commit doesn't remove the 1.45.2 release.
   rust_1_45 = callPackage ../development/compilers/rust/1_45.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvmPackages = llvmPackages_10;
+    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
   };
   rust_1_46 = callPackage ../development/compilers/rust/1_46.nix {
     inherit (darwin.apple_sdk.frameworks) CoreFoundation Security;
-    llvmPackages = llvmPackages_10;
+    llvmPackages = if stdenv.cc.isClang then llvmPackages_5 else llvmPackages_10;
   };
   rust = rust_1_46;
 
@@ -10025,7 +10028,7 @@ in
   inherit (beam.interpreters)
     erlang erlangR23 erlangR22 erlangR21 erlangR20 erlangR19 erlangR18
     erlang_odbc erlang_javac erlang_odbc_javac erlang_nox erlang_basho_R16B02
-    elixir elixir_1_10 elixir_1_9 elixir_1_8 elixir_1_7;
+    elixir elixir_1_11 elixir_1_10 elixir_1_9 elixir_1_8 elixir_1_7;
 
   inherit (beam.packages.erlang)
     rebar rebar3
@@ -10264,7 +10267,7 @@ in
     pkgs = pkgs.extend (final: _: {
     });
   };
-  inherit (pythonInterpreters) python27 python36 python37 python38 python39 python3Minimal pypy27 pypy36;
+  inherit (pythonInterpreters) python27 python36 python37 python38 python39 python310 python3Minimal pypy27 pypy36;
 
   # Python package sets.
   python27Packages = lib.hiPrioSet (recurseIntoAttrs python27.pkgs);
@@ -10272,6 +10275,7 @@ in
   python37Packages = recurseIntoAttrs python37.pkgs;
   python38Packages = recurseIntoAttrs python38.pkgs;
   python39Packages = python39.pkgs;
+  python310Packages = python310.pkgs;
   pypyPackages = pypy.pkgs;
   pypy2Packages = pypy2.pkgs;
   pypy27Packages = pypy27.pkgs;
@@ -12049,7 +12053,9 @@ in
   boost170 = callPackage ../development/libraries/boost/1.70.nix { };
   boost171 = callPackage ../development/libraries/boost/1.71.nix { };
   boost172 = callPackage ../development/libraries/boost/1.72.nix { };
-  boost17x = boost172;
+  boost173 = callPackage ../development/libraries/boost/1.73.nix { };
+  boost174 = callPackage ../development/libraries/boost/1.74.nix { };
+  boost17x = boost174;
   boost = boost16x;
 
   boost_process = callPackage ../development/libraries/boost-process { };
@@ -12342,7 +12348,9 @@ in
 
   egl-wayland = callPackage ../development/libraries/egl-wayland {};
 
-  elastix = callPackage ../development/libraries/science/biology/elastix { };
+  elastix = callPackage ../development/libraries/science/biology/elastix {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   enchant1 = callPackage ../development/libraries/enchant/1.x.nix { };
 
@@ -14713,7 +14721,6 @@ in
     inherit (darwin.apple_sdk.frameworks) OpenCL Cocoa;
   };
   opencascade-occt = callPackage ../development/libraries/opencascade-occt { };
-  opencascade-occt730 = callPackage ../development/libraries/opencascade-occt/7.3.nix { };
 
   opencl-headers = callPackage ../development/libraries/opencl-headers { };
 
@@ -16642,6 +16649,8 @@ in
 
   minio = callPackage ../servers/minio { };
 
+  mkchromecast = libsForQt5.callPackage ../applications/networking/mkchromecast { };
+
   # Backwards compatibility.
   mod_dnssd = pkgs.apacheHttpdPackages.mod_dnssd;
   mod_fastcgi = pkgs.apacheHttpdPackages.mod_fastcgi;
@@ -17252,7 +17261,8 @@ in
 
   inherit (callPackages ../servers/unifi { })
     unifiLTS
-    unifiStable;
+    unifiStable
+    unifiBeta;
   unifi = unifiStable;
 
   urserver = callPackage ../servers/urserver { };
@@ -18525,6 +18535,8 @@ in
 
   raspberrypifw = callPackage ../os-specific/linux/firmware/raspberrypi {};
   raspberrypiWirelessFirmware = callPackage ../os-specific/linux/firmware/raspberrypi-wireless { };
+
+  raspberrypi-eeprom = callPackage ../os-specific/linux/raspberrypi-eeprom {};
 
   raspberrypi-tools = callPackage ../os-specific/linux/firmware/raspberrypi/tools.nix {};
 
@@ -20511,6 +20523,8 @@ in
   keepassx2 = callPackage ../applications/misc/keepassx/2.0.nix { };
   keepassxc = libsForQt5.callPackage ../applications/misc/keepassx/community.nix { };
 
+  keeweb = callPackage ../applications/misc/keeweb { };
+
   inherit (gnome3) evince;
   evolution-data-server = gnome3.evolution-data-server;
   evolution-ews = callPackage ../applications/networking/mailreaders/evolution/evolution-ews { };
@@ -20736,7 +20750,7 @@ in
 
   gradio = callPackage ../applications/audio/gradio { };
 
-  puddletag = callPackage ../applications/audio/puddletag { };
+  puddletag = libsForQt5.callPackage ../applications/audio/puddletag { };
 
   w_scan = callPackage ../applications/video/w_scan { };
 
@@ -20852,11 +20866,6 @@ in
   freecad = libsForQt5.callPackage ../applications/graphics/freecad {
     mpi = openmpi;
   };
-  freecadStable = libsForQt5.callPackage ../applications/graphics/freecad/stable.nix {
-    mpi = openmpi;
-    opencascade-occt = opencascade-occt730;
-    python3Packages = python37Packages;
-  };
 
   freemind = callPackage ../applications/misc/freemind {
     jdk = jdk8; # TODO: remove override https://github.com/NixOS/nixpkgs/pull/89731
@@ -20952,6 +20961,11 @@ in
   gnucash = callPackage ../applications/office/gnucash { };
 
   goffice = callPackage ../development/libraries/goffice { };
+
+  hydrus = python3Packages.callPackage ../applications/graphics/hydrus {
+    inherit miniupnpc_2 swftools;
+    inherit (qt5) wrapQtAppsHook;
+  };
 
   jetbrains = (recurseIntoAttrs (callPackages ../applications/editors/jetbrains {
     jdk = jetbrains.jdk;
@@ -22128,8 +22142,7 @@ in
     mopidy
     mopidy-gmusic
     mopidy-iris
-    mopidy-local-images
-    mopidy-local-sqlite
+    mopidy-local
     mopidy-moped
     mopidy-mopify
     mopidy-mpd
@@ -24167,7 +24180,9 @@ in
 
   wofi = callPackage ../applications/misc/wofi { };
 
-  wordnet = callPackage ../applications/misc/wordnet { };
+  wordnet = callPackage ../applications/misc/wordnet {
+    inherit (darwin.apple_sdk.frameworks) Cocoa;
+  };
 
   wordgrinder = callPackage ../applications/office/wordgrinder { };
 
@@ -27978,6 +27993,8 @@ in
 
   yadm = callPackage ../applications/version-management/yadm { };
 
+  yamale = with python3Packages; toPythonApplication yamale;
+
   yamdi = callPackage ../tools/video/yamdi { };
 
   yandex-disk = callPackage ../tools/filesystems/yandex-disk { };
@@ -28309,4 +28326,5 @@ in
   cagebreak = callPackage ../applications/window-managers/cagebreak/default.nix {};
 
   psftools = callPackage ../os-specific/linux/psftools {};
+
 }
